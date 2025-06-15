@@ -8,7 +8,7 @@ export default function AuthButton () {
         return (
             <button 
             onClick={() => signIn("github")}
-            className="border-1 border-black"
+            className="border-1 border-black cursor-pointer"
             >
                 Iniciar sesión
             </button>
@@ -18,7 +18,7 @@ export default function AuthButton () {
     return (
         <button 
         onClick={() => signOut()}
-        className="border-1 border-black"
+        className="border-1 border-black cursor-pointer"
         >
             Cerrar sesión
         </button>

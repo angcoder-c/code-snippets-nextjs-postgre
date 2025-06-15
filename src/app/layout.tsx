@@ -11,7 +11,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-      className="bg-gray-200 border-3 border-black min-h-dvh max-w-200 justify-center items-center m-auto sm:w-full"
+      className="bg-gray-200 border-3 border-black min-h-dvh max-w-200 justify-center items-center m-auto sm:w-full px-3 md:px-0"
       >
         <Providers session={session}>
           {children}

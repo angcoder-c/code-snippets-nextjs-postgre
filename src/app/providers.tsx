@@ -2,7 +2,6 @@
 
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
-import { getSession } from "@/app/lib/auth";
 
 export default function Providers({
     session,

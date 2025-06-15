@@ -44,6 +44,8 @@ export default function SearchTextFilter ({
         value={inputAttr.value}
         type={inputAttr.type} 
         placeholder={capitalize(ftype)} 
-        onChange={inputAttr.handleChange}/>
+        onChange={inputAttr.handleChange}
+        className="bg-blue-500 rounded-xl p-2 shadow shadow-black"
+        />
     )
 }

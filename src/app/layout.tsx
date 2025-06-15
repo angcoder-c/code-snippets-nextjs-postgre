@@ -10,7 +10,7 @@ export default async function RootLayout({
   const session = await getSession();
   return (
     <html lang="en">
-      <body className="bg-black text-white">  
+      <body className="bg-gray-300">  
           <Providers session={session}>
             <main className="border-3 border-white min-h-dvh max-w-200 justify-center items-center m-auto sm:w-full px-3 md:px-0">
               {children}

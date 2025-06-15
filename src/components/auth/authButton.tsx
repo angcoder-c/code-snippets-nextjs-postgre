@@ -8,9 +8,9 @@ export default function AuthButton () {
         return (
             <button 
             onClick={() => signIn("github")}
-            className="border-1 border-black cursor-pointer"
+            className="bg-blue-500 rounded-xl shadow shadow-black p-2 min-w-20 hover:bg-blue-600 cursor-pointer"
             >
-                Iniciar sesión
+                Sign in
             </button>
         )
     }

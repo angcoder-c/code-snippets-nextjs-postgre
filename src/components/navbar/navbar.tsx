@@ -8,8 +8,8 @@ export default function Navbar () {
     // flex flex-col border-1 gap-5 justify-between border-black p-4 md:flex-row
     // flex flex-col md:grid md:grid-cols-3 border-2 border-black
     return (
-        <header className="bg-amber-500 p-4 sm:px-20 rounded-2xl mt-5">
-            <nav className="flex flex-row border-1 gap-5 justify-between p-2 size-full">
+        <header className="bg-amber-500 p-4 sm:px-20 rounded-2xl mt-5 shadow shadow-black">
+            <nav className="flex flex-row gap-5 justify-between p-2 size-full">
                 <div>
                     <Link href={'/'}>
                         Inicio

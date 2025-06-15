@@ -33,7 +33,7 @@ export default function SearchSelectFilter ({
     } [ftype]
 
     return (
-        <select defaultValue={inputAttr.value} onChange={inputAttr.handleChange}>
+        <select className="bg-blue-500 p-2 rounded-xl shadow shadow-black" defaultValue={inputAttr.value} onChange={inputAttr.handleChange}>
             {
                 inputAttr.opts.map(opt => (
                     <option key={opt} value={opt}>{opt}</option>

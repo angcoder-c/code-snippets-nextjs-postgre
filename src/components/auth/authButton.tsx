@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession, signIn, signOut } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 export default function AuthButton () {
     const {data: session, status} = useSession()
@@ -8,7 +9,7 @@ export default function AuthButton () {
     if (status === 'unauthenticated') {
         return (
             <button 
-            onClick={() => signIn("github")}
+            onClick={() => signIn("github", { callbackUrl: "/" })}
             className="bg-blue-500 rounded-xl shadow shadow-black p-2 min-w-20 hover:bg-blue-600 cursor-pointer"
             >
                 Sign in

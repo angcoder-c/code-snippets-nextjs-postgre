@@ -2,9 +2,6 @@ import { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
 export const authOptions : AuthOptions = {
-    pages :{ 
-        signIn : '/'
-    },
     providers : [
         GithubProvider({
             clientId : process.env.GITHUB_ID as string,
@@ -16,5 +13,15 @@ export const authOptions : AuthOptions = {
         async session({ session }) {
             return session
         },
+        async redirect({ url, baseUrl }) {
+            if (url.startsWith("/")) return `${baseUrl}${url}`
+            
+            if (url.includes("callbackUrl=")) {
+                const originalUrl = decodeURIComponent(url.split("callbackUrl=")[1]);
+                return originalUrl;
+            }
+            
+            return baseUrl
+        }
     },
 }

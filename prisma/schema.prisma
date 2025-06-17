@@ -1,0 +1,87 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../.prisma-app/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("POSTGRES_URL")
+  directUrl  = env("POSTGRES_URL_NON_POOLING")
+  extensions = [uuid_ossp(map: "uuid-ossp", schema: "extensions")]
+}
+
+model User {
+  id       String    @id @default(dbgenerated("uuid_generate_v4()"))
+  name     String
+  email    String    @unique
+  image    String?
+  snippets Snippet[]
+  votes    Vote[]
+
+  @@map("User")
+}
+
+model Snippet {
+  id              String            @id @default(dbgenerated("uuid_generate_v4()"))
+  title           String
+  description     String
+  code            String
+  createdAt       DateTime          @default(now())
+  language        String
+  languageVersion String
+  complexity      ComplexitySupport
+  userId          String
+  dependencies    Dependency[]
+  keywords        Keyword[]
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes           Vote[]
+
+  @@index([userId])
+  @@index([language])
+  @@index([complexity])
+  @@index([createdAt])
+  @@map("Snippet")
+}
+
+model Dependency {
+  id        String  @id @default(dbgenerated("uuid_generate_v4()"))
+  name      String
+  snippetId String
+  snippet   Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+
+  @@index([name])
+}
+
+model Keyword {
+  id        String  @id @default(dbgenerated("uuid_generate_v4()"))
+  name      String
+  snippetId String
+  snippet   Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+
+  @@index([name])
+}
+
+model Vote {
+  id        String  @id @default(dbgenerated("uuid_generate_v4()"))
+  vote      Int
+  snippetId String
+  userId    String
+  snippet   Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, snippetId])
+}
+
+enum ComplexitySupport {
+  O_1           @map("O(1)")
+  O_LOG_N       @map("O(log n)")
+  O_N           @map("O(n)")
+  O_N_LOG_N     @map("O(n log n)")
+  O_N_SQUARED   @map("O(n^2)")
+  O_N_CUBED     @map("O(n^3)")
+  O_2_N         @map("O(2^n)")
+  O_N_FACTORIAL @map("O(n!)")
+  O_SQRT_N      @map("O(sqrt n)")
+  O_K_N         @map("O(k^n)")
+}

@@ -52,3 +52,26 @@ export type SearchBarType = {
   toggleFilters : () => void
   reset: () => void
 }
+
+// database types
+
+export type UserType = {
+  id?: string
+  name : string
+  email : string
+  image : string
+}
+
+export type SnippetType = {
+  id?: string
+  title: string
+  description: string
+  code: string
+  created_at?: Date
+  language: LanguagesSupport
+  language_version: number
+  complexity: ComplexitySupport
+  dependecies: string[]
+  keywords: string[]
+  by_user: UserType
+}

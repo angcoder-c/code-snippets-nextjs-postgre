@@ -1,7 +1,6 @@
 'use client'
 
 import { useSession, signIn, signOut } from "next-auth/react"
-import { redirect } from "next/navigation"
 
 export default function AuthButton () {
     const {data: session, status} = useSession()

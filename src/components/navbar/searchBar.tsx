@@ -5,10 +5,34 @@ import useSearchActions from "@/hooks/useSearchActions"
 import useSearchState from "@/hooks/useSearchState"
 import SearchTextFilter from "@/components/navbar/searchTextFilter"
 import SearchSelectFilter from "@/components/navbar/searchSelectFilter"
+import { useSearchParams, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
+import { useDebouncedCallback } from "use-debounce"
 
 export default function SearchBar () {
     const { body, filters } = useSearchState()
     const { handleChangeBody, handleToggleFilters } = useSearchActions()
+
+    const pathname = usePathname()
+    const router = useRouter()
+    const urlSearchParams = useSearchParams()
+
+    const handleDebounceSearch = useDebouncedCallback((queryName, value) => {
+        const params = new URLSearchParams(urlSearchParams)
+        // params.set('page', '1');
+        if (value) {
+            params.set(queryName, value)
+        } else {
+            params.delete(queryName)
+        }
+        router.replace(`${pathname}?${params.toString()}`)
+
+    }, 500)
+
+    const handleDoubounceChangeBody = (event: React.ChangeEvent<HTMLInputElement>) => {
+        handleDebounceSearch('body', event.target.value)
+        handleChangeBody(event)
+    }
 
     return (
         <div className="flex flex-col bg-gray-400 rounded-xl shadow shadow-black">
@@ -18,7 +42,7 @@ export default function SearchBar () {
                 type="text" 
                 placeholder="Search" 
                 value={body} 
-                onChange={handleChangeBody}
+                onChange={handleDoubounceChangeBody}
                 className="w-[100%] py-1 focus:outline-0"
                 />
                 <button onClick={handleToggleFilters}>
@@ -36,8 +60,8 @@ export default function SearchBar () {
                 filters ? 'flex md:grid' : 'hidden'
             )}>
                 <SearchTextFilter ftype='date'/>
-                <SearchTextFilter ftype='dependency'/>
-                <SearchTextFilter ftype='keyword' />
+                <SearchTextFilter ftype='dependency' handleSearch={handleDebounceSearch}/>
+                <SearchTextFilter ftype='keyword' handleSearch={handleDebounceSearch} />
                 <SearchSelectFilter ftype="language" />
                 <SearchSelectFilter ftype="complexity" />
             </div>

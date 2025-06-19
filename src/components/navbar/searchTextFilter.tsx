@@ -3,11 +3,17 @@
 import useSearchActions from "@/hooks/useSearchActions"
 import useSearchState from "@/hooks/useSearchState"
 import { capitalize } from "@/utils"
+import { DebouncedState } from "use-debounce"
 
 export default function SearchTextFilter ({
-    ftype
+    ftype,
+    handleSearch
 }:{
-    ftype : 'dependency' | 'keyword' | 'date'
+    ftype : 'dependency' | 'keyword' | 'date',
+    handleSearch?: DebouncedState<(
+        queryName: string, 
+        value: string, 
+    ) => void>
 }) { 
     const { 
         handleChangeDate, 
@@ -21,6 +27,19 @@ export default function SearchTextFilter ({
         keyword 
     } = useSearchState()
 
+    const handleDoubounceChangeFiled = (
+            queryName:string, 
+            event: React.ChangeEvent<HTMLInputElement>, 
+            callback: (event: React.ChangeEvent<HTMLInputElement>
+        )=>void) => {
+        if (!handleSearch) { 
+            callback(event)
+            return
+        }
+        handleSearch(queryName, event.target.value)
+        callback(event)
+    }
+
     const inputAttr = {
         date : {
             value: date.toISOString().split('T')[0],
@@ -30,12 +49,24 @@ export default function SearchTextFilter ({
         dependency : {
             value : dependency,
             type : 'text',
-            handleChange : handleChangeDependency
+            handleChange : (
+                event: React.ChangeEvent<HTMLInputElement>
+            ) => handleDoubounceChangeFiled(
+                'dependencies', 
+                event, 
+                handleChangeDependency
+            )
         },
         keyword : {
             value: keyword,
             type : 'text',
-            handleChange : handleChangeKeyword
+            handleChange : (
+                event: React.ChangeEvent<HTMLInputElement>
+            ) => handleDoubounceChangeFiled(
+                'keywords', 
+                event, 
+                handleChangeKeyword
+            )
         }
     } [ftype]
 

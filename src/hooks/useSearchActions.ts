@@ -2,7 +2,6 @@ import { useSearchStore } from "@/stores/useSearchStore"
 import { ComplexitySupport, LanguagesSupport } from "@/types"
 import { useRouter } from 'next/navigation'
 import { ReadonlyURLSearchParams } from "next/navigation"
-import { useDebouncedCallback } from "use-debounce"
 
 export default function useSearchActions ({
     searchParams,

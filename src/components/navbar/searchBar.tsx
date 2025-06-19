@@ -5,7 +5,7 @@ import useSearchActions from "@/hooks/useSearchActions"
 import useSearchState from "@/hooks/useSearchState"
 import SearchTextFilter from "@/components/navbar/searchTextFilter"
 import SearchSelectFilter from "@/components/navbar/searchSelectFilter"
-import { useSearchParams, useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { usePathname } from "next/navigation"
 import { useDebouncedCallback } from "use-debounce"
 
@@ -14,11 +14,8 @@ export default function SearchBar () {
     const urlSearchParams = useSearchParams()
 
     const { 
-        body, 
         filters,
-        date, 
-        dependency, 
-        keyword 
+        date,  
      } = useSearchState()
     const { 
         handleChangeBody, 

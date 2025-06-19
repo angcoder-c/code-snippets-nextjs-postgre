@@ -1,8 +1,6 @@
 'use client'
 
-import useSearchActions from "@/hooks/useSearchActions"
 import useSearchState from "@/hooks/useSearchState"
-import { ComplexitySupport, LanguagesSupport } from "@/types"
 import { LanguagesSupportArray, ComplexitySupportArray, capitalize } from "@/utils"
 
 export default function SearchSelectFilter ({

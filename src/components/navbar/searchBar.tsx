@@ -10,29 +10,43 @@ import { usePathname } from "next/navigation"
 import { useDebouncedCallback } from "use-debounce"
 
 export default function SearchBar () {
-    const { body, filters } = useSearchState()
-    const { handleChangeBody, handleToggleFilters } = useSearchActions()
-
     const pathname = usePathname()
-    const router = useRouter()
     const urlSearchParams = useSearchParams()
 
-    const handleDebounceSearch = useDebouncedCallback((queryName, value) => {
-        const params = new URLSearchParams(urlSearchParams)
-        // params.set('page', '1');
-        if (value) {
-            params.set(queryName, value)
-        } else {
-            params.delete(queryName)
-        }
-        router.replace(`${pathname}?${params.toString()}`)
+    const { 
+        body, 
+        filters,
+        date, 
+        dependency, 
+        keyword 
+     } = useSearchState()
+    const { 
+        handleChangeBody, 
+        handleToggleFilters,
+        handleChangeDate, 
+        handleChangeDependency, 
+        handleChangeKeyword,
+        handleChangeLanguage,
+        handleChangeComplexity
+     } = useSearchActions({
+        searchParams: urlSearchParams,
+        pathname: pathname
+    })
 
-    }, 500)
+    const handleDoubounceChangeBody = useDebouncedCallback(
+        (term) => handleChangeBody(term), 
+        500
+    )
 
-    const handleDoubounceChangeBody = (event: React.ChangeEvent<HTMLInputElement>) => {
-        handleDebounceSearch('body', event.target.value)
-        handleChangeBody(event)
-    }
+    const handleDoubounceChangeDependencies = useDebouncedCallback(
+        (term) => handleChangeDependency(term), 
+        500
+    )
+
+    const handleDoubounceChangeKeywords = useDebouncedCallback(
+        (term) => handleChangeKeyword(term),
+        500
+    )
 
     return (
         <div className="flex flex-col bg-gray-400 rounded-xl shadow shadow-black">
@@ -41,8 +55,8 @@ export default function SearchBar () {
                 <input 
                 type="text" 
                 placeholder="Search" 
-                value={body} 
-                onChange={handleDoubounceChangeBody}
+                defaultValue={urlSearchParams.get('body')?.toString()}
+                onChange={(e) => handleDoubounceChangeBody(e.target.value)}
                 className="w-[100%] py-1 focus:outline-0"
                 />
                 <button onClick={handleToggleFilters}>
@@ -59,11 +73,29 @@ export default function SearchBar () {
                 'flex-col  md:grid-cols-3 gap-2 py-5 px-2',
                 filters ? 'flex md:grid' : 'hidden'
             )}>
-                <SearchTextFilter ftype='date'/>
-                <SearchTextFilter ftype='dependency' handleSearch={handleDebounceSearch}/>
-                <SearchTextFilter ftype='keyword' handleSearch={handleDebounceSearch} />
-                <SearchSelectFilter ftype="language" />
-                <SearchSelectFilter ftype="complexity" />
+                <SearchTextFilter 
+                ftype='date' 
+                value={date.toISOString().split("T")[0]} 
+                handleChange={handleChangeDate}
+                />
+                <SearchTextFilter 
+                ftype='dependency'
+                value={urlSearchParams.get('dependencies')?.toString() || ''} 
+                handleChange={(e) => handleDoubounceChangeDependencies(e.target.value)}
+                />
+                <SearchTextFilter 
+                ftype='keyword'
+                value={urlSearchParams.get('keywords')?.toString() || ''} 
+                handleChange={(e) => handleDoubounceChangeKeywords(e.target.value)} 
+                />
+                <SearchSelectFilter 
+                ftype="language"
+                handleChange={handleChangeLanguage} 
+                />
+                <SearchSelectFilter 
+                ftype="complexity" 
+                handleChange={handleChangeComplexity}
+                />
             </div>
         </div>
     )

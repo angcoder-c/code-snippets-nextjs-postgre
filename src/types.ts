@@ -29,6 +29,19 @@ export type ComplexitySupport =
     | "O(n!)"
     | "O(sqrt n)"
     | "O(k^n)"
+    
+export const ComplexitySupportDB = {
+  "O(1)": "O_1",
+  "O(log n)": 'O_LOG_N',
+  "O(n)": 'O_N',
+  "O(n log n)": 'O_N_LOG_N',
+  "O(n^2)": 'O_N_SQUARED',
+  "O(n^3)": 'O_N_CUBED',
+  "O(2^n)": 'O_2_N',
+  "O(n!)": 'O_N_FACTORIAL',
+  "O(sqrt n)": 'O_SQRT_N',
+  "O(k^n)": 'O_K_N'
+}
 
 export type SearchBarUpdate = {
   body: string

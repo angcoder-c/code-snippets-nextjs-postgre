@@ -1,4 +1,4 @@
-import { ComplexitySupport } from "@/types";
+import { ComplexitySupportWithoutNull } from "@/types";
 
 export const placeholderData = {
   User: [
@@ -23,7 +23,7 @@ export const placeholderData = {
       "code": "def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]",
       "language": "Python",
       "languageVersion": "3.10",
-      "complexity": 'O(sqrt n)',
+      "complexity": 'O(sqrt n)' as ComplexitySupportWithoutNull,
       "userId": "a1b2c3d4-e5f6-7890-abcd-000000000001",
       "createdAt": "2025-06-19T00:00:00.000Z"
     },
@@ -34,7 +34,7 @@ export const placeholderData = {
       "code": "def binary_search(arr, x):\n    l, r = 0, len(arr) - 1\n    while l <= r:\n        mid = (l + r) // 2\n        if arr[mid] == x:\n            return mid\n        elif arr[mid] < x:\n            l = mid + 1\n        else:\n            r = mid - 1\n    return -1",
       "language": "Python",
       "languageVersion": "3.10",
-      "complexity": 'O(log n)',
+      "complexity": 'O(log n)' as ComplexitySupportWithoutNull,
       "userId": "a1b2c3d4-e5f6-7890-abcd-000000000002",
       "createdAt": "2025-06-18T00:00:00.000Z"
     }

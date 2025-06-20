@@ -42,7 +42,7 @@ async function createSnippets() {
                         createdAt: snippet.createdAt,
                         language: snippet.language,
                         languageVersion: snippet.languageVersion,
-                        complexity: (ComplexitySupportDB as any)[snippet.complexity],
+                        complexity: ComplexitySupportDB[snippet.complexity],
                         userId: snippet.userId
                     }
                 });

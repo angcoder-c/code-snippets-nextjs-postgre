@@ -122,7 +122,6 @@ async function createVotes() {
 
 export async function GET() {
     try {        
-        // console.log('🧹 Cleaning existing data...');
         // await prisma.vote.deleteMany({});
         await prisma.keyword.deleteMany({});
         await prisma.dependency.deleteMany({});
@@ -150,7 +149,6 @@ export async function GET() {
     } catch (error) {
         console.error('Error seeding database:', error);
         return Response.json({ 
-            error: error.message,
             details: error 
         }, { status: 500 });
     } finally {

@@ -149,6 +149,7 @@ export async function GET() {
     } catch (error) {
         console.error('Error seeding database:', error);
         return Response.json({ 
+            error: (error as Error).message,
             details: error 
         }, { status: 500 });
     } finally {

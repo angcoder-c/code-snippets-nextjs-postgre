@@ -1,6 +1,6 @@
 import prisma from "@/app/lib/prisma";
 import { placeholderData } from "./placeholder-data";
-import { ComplexitySupportDB } from "@/types";
+import { ComplexitySupportApp2DB } from "@/types";
 
 async function createUsers() {    
     for (const user of placeholderData.User) {
@@ -42,7 +42,7 @@ async function createSnippets() {
                         createdAt: snippet.createdAt,
                         language: snippet.language,
                         languageVersion: snippet.languageVersion,
-                        complexity: ComplexitySupportDB[snippet.complexity],
+                        complexity: ComplexitySupportApp2DB[snippet.complexity],
                         userId: snippet.userId
                     }
                 });

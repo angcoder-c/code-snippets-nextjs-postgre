@@ -13,11 +13,11 @@ export default function SnippetCard ({
         <div className="break-inside-avoid mb-4">
             <div className="bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-700 shadow-black">
                 <SnippetCardHeader
-                  username={snippet.by_user.name}
-                  image={snippet.by_user.image}
-                  date={snippet.created_at}
+                username={snippet.by_user.name}
+                image={snippet.by_user.image}
+                date={snippet.created_at}
                 />
-                
+                    
                 {/* titulo */}
                 <h2 className="text-lg font-semibold text-white mb-3 line-clamp-2">
                     {snippet.title}

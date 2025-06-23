@@ -11,16 +11,23 @@ export default function SearchTextFilter ({
     value : string | undefined
     handleChange : (event: React.ChangeEvent<HTMLInputElement>)=>void
 }) { 
-    const inputType = {
-        date : 'date',
-        dependency : 'text',
-        keyword : 'text'
-    }[ftype]
+
+    if (ftype==='date') {
+        return (
+            <input 
+            defaultValue={value ? value : ''}
+            type="date" 
+            placeholder={capitalize(ftype)} 
+            onChange={handleChange}
+            className="bg-white dark:bg-gray-800 rounded-xl p-2 shadow shadow-black"
+            />
+        )
+    }    
 
     return (
         <input 
         defaultValue={value}
-        type={inputType} 
+        type="text" 
         placeholder={capitalize(ftype)} 
         onChange={handleChange}
         className="bg-white dark:bg-gray-800 rounded-xl p-2 shadow shadow-black"

@@ -8,7 +8,7 @@ export default async function Home() {
     <>
       <Navbar />
       <div className="pt-10 pb-5">
-        <div className="grid gap-4 grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] space-y-4">
+        <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
           {snippets.map((snippet) => {
             return (
               <SnippetCard 
@@ -21,3 +21,17 @@ export default async function Home() {
     </>
   );
 }
+
+/*
+  props
+ : {
+    searchParams? : Promise<{
+        body? : string,
+        dependencies? : string,
+        keywords? : string,
+        date? : string,
+        complexity? : string,
+        language? : string
+    }>
+}
+*/

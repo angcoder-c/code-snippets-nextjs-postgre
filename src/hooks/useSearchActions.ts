@@ -1,80 +1,72 @@
 import { useSearchStore } from "@/stores/useSearchStore"
 import { ComplexitySupport, LanguagesSupport } from "@/types"
 import { ComplexitySupportArray, LanguagesSupportArray } from "@/utils"
-import { useRouter } from 'next/navigation'
-import { ReadonlyURLSearchParams } from "next/navigation"
+import { useCallback } from "react"
 
-export default function useSearchActions ({
-    searchParams,
-    pathname
-}: {
-    searchParams?: ReadonlyURLSearchParams,
-    pathname?: string,
-}={}) {
+export default function useSearchActions () {
     const update = useSearchStore(state => state.update)
     const toggleFilters = useSearchStore(state => state.toggleFilters)
     const reset = useSearchStore(state => state.reset)
 
-    // query params
-    const router = useRouter()
-    const setQueryParams = (
-        queryName:string, value:string
-    )=> {
-        if (!searchParams || !pathname) return
-        const params = new URLSearchParams(searchParams)
-        if(value!=='No select' && value){
-            params.set(queryName, value)
-        } else {
-            params.delete(queryName)
+    // handlers individuales
+    const handleChangeBody = useCallback((value: string) => {
+        update({ body: value })
+    }, [update])
+
+    const handleChangeDependency = useCallback((value: string) => {
+        update({ dependency: value })
+    }, [update])
+
+    const handleChangeKeyword = useCallback((value: string) => {
+        update({ keyword: value })
+    }, [update])
+
+    const handleChangeLanguage = useCallback((value: string) => {
+        if (!LanguagesSupportArray.includes(value)) return
+        
+        const languageValue = value as LanguagesSupport
+        update({ language: languageValue })
+    }, [update])
+
+    const handleChangeComplexity = useCallback((value: string) => {
+        if (!ComplexitySupportArray.includes(value)) return
+        
+        const complexityValue = value as ComplexitySupport
+        update({ complexity: complexityValue })
+    }, [update])
+
+    const handleChangeDate = useCallback((value: string) => {        
+        if (!value) {
+            update({ date: undefined })
+            return
         }
-        router.push(`${pathname}?${params.toString()}`, { scroll: false })
-    }
 
-
-    const handleChangeBody = (value:string) => {
-        update({ body : value })
-    }
-
-    const handleChangeDependency = (value:string) => {
-        update({ dependency : value })
-    }
-
-    const handleChangeKeyword = (value:string) => {
-        update({ keyword : value })
-    }
-
-    const handleChangeLanguage = (value: string) => {
-        if (!LanguagesSupportArray.includes(value)){
-            update({ language : value as LanguagesSupport })
-            setQueryParams('language', value)
+        const parsed = new Date(value)
+        if (isNaN(parsed.getTime())) {
+            update({ date: undefined })
+            return
         }
-    }
 
-    const handleChangeComplexity = (value: string) => {
-        if (ComplexitySupportArray.includes(value)) {
-            update({ complexity : value as ComplexitySupport })
-            setQueryParams('complexity', value)
-        }
-    }
+        update({ date: parsed })
+    }, [update])
 
-    const handleChangeDate = (value: string) => {
-        if (value) {
-            update({ date : new Date(value) })
-            setQueryParams('date', value)
-        }
-    }
+    const handleToggleFilters = useCallback(
+        () => toggleFilters(), 
+        [toggleFilters]
+    )
 
-    const handleToggleFilters = () => toggleFilters()
-    const handleReset = () => reset()
+    const handleReset = useCallback(() => {
+        reset()
+    }, [reset])
+
     return {
         handleChangeBody,
         handleChangeDependency,
+        handleChangeKeyword,
         handleChangeLanguage,
         handleChangeComplexity,
         handleChangeDate,
         handleToggleFilters,
-        handleReset,
-        handleChangeKeyword,
+        handleReset
     }
 }
-

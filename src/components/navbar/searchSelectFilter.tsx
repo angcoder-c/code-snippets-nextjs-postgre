@@ -1,28 +1,24 @@
 'use client'
 
-import useSearchState from "@/hooks/useSearchState"
 import { LanguagesSupportArray, ComplexitySupportArray, capitalize } from "@/utils"
 
 export default function SearchSelectFilter ({
     ftype,
+    value,
     handleChange
 }:{
     ftype : 'language' | 'complexity',
+    value: string,
     handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }) { 
 
-    const { 
-        language, 
-        complexity
-    } = useSearchState()
-
     const inputAttr = {
         language : {
-            value : language,
+            value : LanguagesSupportArray.includes(value) ? value : 'No select',
             opts : LanguagesSupportArray,
         },
         complexity : {
-            value : complexity,
+            value : ComplexitySupportArray.includes(value) ? value : 'No select',
             opts : ComplexitySupportArray,
         }
     } [ftype]
@@ -30,7 +26,7 @@ export default function SearchSelectFilter ({
     return (
         <div className="flex flex-col">
             <label>{capitalize(ftype)}</label>
-            <select className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow shadow-black" defaultValue={inputAttr.value} onChange={handleChange}>
+            <select className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow shadow-black" value={inputAttr.value} onChange={handleChange}>
                 {
                     inputAttr.opts.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>

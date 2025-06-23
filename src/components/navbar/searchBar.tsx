@@ -2,14 +2,12 @@
 
 import clsx from "clsx"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import SearchTextFilter from "@/components/navbar/searchTextFilter"
 import SearchSelectFilter from "@/components/navbar/searchSelectFilter"
 import useSearchState from "@/hooks/useSearchState"
 import useSearchActions from "@/hooks/useSearchActions"
-import { ComplexitySupport } from "@/types"
-import { LanguagesSupport } from "@/types"
 
 export default function SearchBar() {
   const pathname = usePathname()
@@ -18,7 +16,6 @@ export default function SearchBar() {
 
   const { 
         filters, 
-        date,
         body,
         keyword,
         dependency 

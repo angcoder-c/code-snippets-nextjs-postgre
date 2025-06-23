@@ -43,17 +43,23 @@ export default function SearchBar() {
   const updateQueryParams = useDebouncedCallback(() => {
     const params = new URLSearchParams(searchParams.toString())
 
-    body 
-    ? params.set('body', body) 
-    : params.delete('body')
+    if (body) {
+        params.set('body', body)
+    } else {
+        params.delete('body')
+    }
 
-    dependency 
-    ? params.set('dependencies', dependency) 
-    : params.delete('dependencies')
+    if (dependency) {
+        params.set('dependencies', dependency)
+    } else {
+        params.delete('dependencies')
+    }
 
-    keyword 
-    ? params.set('keywords', keyword) 
-    : params.delete('keywords')
+    if (keyword) {
+        params.set('keywords', keyword)
+    } else {
+        params.delete('keywords')
+    }
     
     router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }, 200)

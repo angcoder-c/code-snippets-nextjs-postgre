@@ -10,9 +10,10 @@ export default async function RootLayout({
   const session = await getSession();
   return (
     <html lang="en">
-      <body className="bg-gray-300">  
+      <body className="overflow-y-scroll bg-white dark:bg-gray-900">  
           <Providers session={session}>
-            <main className="border-3 border-white min-h-dvh max-w-200 justify-center items-center m-auto sm:w-full px-3 md:px-0">
+            {/* border-3 border-white */}
+            <main className="min-h-dvh pt-5 max-w-200 justify-center items-center m-auto sm:w-full px-3 md:px-2">
               {children}
             </main>
           </Providers>

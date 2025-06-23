@@ -26,7 +26,7 @@ export default function useSearchActions ({
         } else {
             params.delete(queryName)
         }
-        router.replace(`${pathname}?${params.toString()}`)
+        router.push(`${pathname}?${params.toString()}`)
     }
 
 
@@ -73,7 +73,8 @@ export default function useSearchActions ({
         handleChangeDate,
         handleToggleFilters,
         handleReset,
-        handleChangeKeyword
+        handleChangeKeyword,
+        update
     }
 }
 

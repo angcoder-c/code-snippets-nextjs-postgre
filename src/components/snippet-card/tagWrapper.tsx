@@ -15,7 +15,7 @@ export default function SnippetTagWrapper ({
                 tags.map((tag) => (
                     <SnippetTag
                     key={tag.id}
-                    id={tag.id}
+                    href={'/' /* tag.id */}
                     name={tag.name}
                     formatChar={formatChar}
                     />

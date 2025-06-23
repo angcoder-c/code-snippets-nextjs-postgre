@@ -1,13 +1,6 @@
 import { useSearchStore } from "@/stores/useSearchStore";
-import { ReadonlyURLSearchParams } from "next/navigation";
 
-export default function useSearchState ({
-    searchParams,
-    pathname
-}: {
-    searchParams?: ReadonlyURLSearchParams,
-    pathname?: string,
-}={}) {
+export default function useSearchState () {
     const body = useSearchStore(state => state.body)
     const language = useSearchStore(state => state.language)
     const complexity = useSearchStore(state => state.complexity)

@@ -8,51 +8,72 @@ import SearchTextFilter from "@/components/navbar/searchTextFilter"
 import SearchSelectFilter from "@/components/navbar/searchSelectFilter"
 import useSearchState from "@/hooks/useSearchState"
 import useSearchActions from "@/hooks/useSearchActions"
+import { ComplexitySupport } from "@/types"
+import { LanguagesSupport } from "@/types"
 
 export default function SearchBar() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const { filters, date } = useSearchState()
+  const { 
+        filters, 
+        date,
+        body,
+        keyword,
+        dependency 
+    } = useSearchState()
 
   const {
     handleToggleFilters,
     handleChangeDate,
     handleChangeLanguage,
     handleChangeComplexity,
-    update, // <- usar update global del store
+    handleChangeBody,
+    handleChangeDependency,
+    handleChangeKeyword,
   } = useSearchActions({ searchParams, pathname })
 
-  // debounce
-  const [filterState, setFilterState] = useState({
-    body: searchParams.get('body') || '',
-    dependency: searchParams.get('dependencies') || '',
-    keyword: searchParams.get('keywords') || ''
-  })
-
-  // sync inputs
   useEffect(() => {
-    setFilterState({
-      body: searchParams.get('body') || '',
-      dependency: searchParams.get('dependencies') || '',
-      keyword: searchParams.get('keywords') || ''
-    })
+    handleChangeBody(searchParams.get('body') || '')
+    handleChangeDependency(searchParams.get('dependencies') || '')
+    handleChangeKeyword(searchParams.get('keywords') || '')
+    handleChangeComplexity(searchParams.get('complexity') || 'No select')
+    handleChangeLanguage(searchParams.get('language') || 'No select')
+    handleChangeDate(searchParams.get('date') || '')
   }, [searchParams])
 
-  const updateQueryParams = useDebouncedCallback((filters) => {
+  const updateQueryParams = useDebouncedCallback(() => {
     const params = new URLSearchParams(searchParams.toString())
-    filters.body ? params.set('body', filters.body) : params.delete('body')
-    filters.dependency ? params.set('dependencies', filters.dependency) : params.delete('dependencies')
-    filters.keyword ? params.set('keywords', filters.keyword) : params.delete('keywords')
-    router.push(`${pathname}?${params.toString()}`, { scroll: false })
-  }, 500)
 
-  const handleChange = (field: keyof typeof filterState) => (value: string) => {
-    const newState = { ...filterState, [field]: value }
-    setFilterState(newState)
-    update({ [field]: value }) // actualiza Zustand
-    updateQueryParams(newState) // actualiza query con debounce
+    body 
+    ? params.set('body', body) 
+    : params.delete('body')
+
+    dependency 
+    ? params.set('dependencies', dependency) 
+    : params.delete('dependencies')
+
+    keyword 
+    ? params.set('keywords', keyword) 
+    : params.delete('keywords')
+    
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+  }, 200)
+
+  const handleChange = (field: 'body' | 'dependency' | 'keyword') => (value: string) => {
+    if (field==='body'){
+        handleChangeBody(value)
+    }
+    
+    if (field==='dependency'){
+        handleChangeDependency(value)
+    }
+    
+    if (field==='keyword'){
+        handleChangeKeyword(value)
+    }
+    updateQueryParams()
   }
 
   return (
@@ -62,7 +83,7 @@ export default function SearchBar() {
         <input
           type="text"
           placeholder="Search"
-          value={filterState.body}
+          value={body}
           onChange={(e) => handleChange("body")(e.target.value)}
           className="w-full py-1 focus:outline-0"
         />
@@ -74,7 +95,7 @@ export default function SearchBar() {
         </button>
       </div>
 
-      {/* Filters */}
+      {/* filters */}
       <div className={clsx(
         'flex flex-col md:grid md:grid-cols-3',
         'transition-all duration-300 ease-in-out overflow-hidden',
@@ -84,26 +105,26 @@ export default function SearchBar() {
       )}>
         <SearchTextFilter
           ftype='date'
-          value={date.toISOString().split("T")[0]}
-          handleChange={handleChangeDate}
+          value={undefined/*date.toISOString().split("T")[0]*/}
+          handleChange={(e)=>handleChangeDate(e.target.value)}
         />
         <SearchTextFilter
           ftype='dependency'
-          value={filterState.dependency}
+          value={dependency}
           handleChange={(e) => handleChange("dependency")(e.target.value)}
         />
         <SearchTextFilter
           ftype='keyword'
-          value={filterState.keyword}
+          value={keyword}
           handleChange={(e) => handleChange("keyword")(e.target.value)}
         />
         <SearchSelectFilter
           ftype="language"
-          handleChange={handleChangeLanguage}
+          handleChange={e => handleChangeLanguage(e.target.value)}
         />
         <SearchSelectFilter
           ftype="complexity"
-          handleChange={handleChangeComplexity}
+          handleChange={e => handleChangeComplexity(e.target.value)}
         />
       </div>
     </div>

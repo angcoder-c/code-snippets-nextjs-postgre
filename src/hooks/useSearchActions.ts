@@ -1,5 +1,6 @@
 import { useSearchStore } from "@/stores/useSearchStore"
 import { ComplexitySupport, LanguagesSupport } from "@/types"
+import { ComplexitySupportArray, LanguagesSupportArray } from "@/utils"
 import { useRouter } from 'next/navigation'
 import { ReadonlyURLSearchParams } from "next/navigation"
 
@@ -21,46 +22,46 @@ export default function useSearchActions ({
     )=> {
         if (!searchParams || !pathname) return
         const params = new URLSearchParams(searchParams)
-        if (value) {
+        if(value!=='No select' && value){
             params.set(queryName, value)
         } else {
             params.delete(queryName)
         }
-        router.push(`${pathname}?${params.toString()}`)
+        router.push(`${pathname}?${params.toString()}`, { scroll: false })
     }
 
 
     const handleChangeBody = (value:string) => {
         update({ body : value })
-        setQueryParams('body', value)
     }
 
     const handleChangeDependency = (value:string) => {
         update({ dependency : value })
-        setQueryParams('dependencies', value)
     }
 
     const handleChangeKeyword = (value:string) => {
         update({ keyword : value })
-        setQueryParams('keywords', value)
     }
 
-    const handleChangeLanguage = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value
-        update({ language : value as LanguagesSupport })
-        setQueryParams('language', value)
+    const handleChangeLanguage = (value: string) => {
+        if (!LanguagesSupportArray.includes(value)){
+            update({ language : value as LanguagesSupport })
+            setQueryParams('language', value)
+        }
     }
 
-    const handleChangeComplexity = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value
-        update({ complexity : value as ComplexitySupport })
-        setQueryParams('complexity', value)
+    const handleChangeComplexity = (value: string) => {
+        if (ComplexitySupportArray.includes(value)) {
+            update({ complexity : value as ComplexitySupport })
+            setQueryParams('complexity', value)
+        }
     }
 
-    const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value
-        update({ date : new Date(value) })
-        setQueryParams('date', value)
+    const handleChangeDate = (value: string) => {
+        if (value) {
+            update({ date : new Date(value) })
+            setQueryParams('date', value)
+        }
     }
 
     const handleToggleFilters = () => toggleFilters()
@@ -74,7 +75,6 @@ export default function useSearchActions ({
         handleToggleFilters,
         handleReset,
         handleChangeKeyword,
-        update
     }
 }
 

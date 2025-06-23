@@ -1,7 +1,6 @@
 'use client'
 
 import { capitalize } from "@/utils"
-import useSearchState from "@/hooks/useSearchState"
 
 export default function SearchTextFilter ({
     ftype,
@@ -9,11 +8,9 @@ export default function SearchTextFilter ({
     handleChange,
 }:{
     ftype : 'dependency' | 'keyword' | 'date',
-    value : string
+    value : string | undefined
     handleChange : (event: React.ChangeEvent<HTMLInputElement>)=>void
 }) { 
-    const state = useSearchState()
-    console.log(state)
     const inputType = {
         date : 'date',
         dependency : 'text',

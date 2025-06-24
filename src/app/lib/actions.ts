@@ -1,8 +1,10 @@
 'use server'
 
-import { SnippetType, ComplexitySupportDB2App, LanguagesSupport } from "@/types";
+import { SnippetType, ComplexitySupportDB2App, LanguagesSupport, UserType } from "@/types";
 import prisma from "@/app/lib/prisma";
 
+// ============================== Snippets ===========================
+// get snippet form db
 export async function fetchSnippets() {
   const snippets = ( await prisma.snippet.findMany({
     include: {
@@ -37,4 +39,29 @@ export async function fetchSnippets() {
   .sort((a, b) => b.netvotes - a.netvotes);
 
   return snippets;
+}
+
+
+//======================== Users =======================
+// check use exists
+export async function checkUserExists(email:string | undefined | null) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email : email || undefined
+    }
+  })
+
+  return user ? true : false
+}
+
+// create user
+export async function createUser(user : UserType) {
+  await prisma.user.create({
+    data : {
+      name: user.name,
+      email: user.email,
+      image: user.image
+    }
+  })
+  console.log("User register: ", user.email)
 }

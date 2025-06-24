@@ -1,5 +1,6 @@
 import { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import { checkUserExists, createUser } from "./app/lib/actions";
 
 export const authOptions : AuthOptions = {
     providers : [
@@ -22,6 +23,25 @@ export const authOptions : AuthOptions = {
             }
             
             return baseUrl
+        },
+        async signIn({ user }){
+            try {
+                const existingUser = await checkUserExists(user.email)
+                
+                if (!existingUser) {
+                    if (user.name && user.email) {
+                        await createUser({
+                            name: user.name,
+                            email: user.email,
+                            image: user.image || null
+                        })
+                    }
+                }
+                return true
+            } catch (error) {
+                console.error("Login error: ", error.message)
+                return false
+            }
         }
     },
 }

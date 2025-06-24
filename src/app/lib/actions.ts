@@ -10,12 +10,11 @@ export async function fetchSnippets() {
       dependencies: true,
       keywords: true,
       votes: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
     }
   }))
   .map(snippet => {
+    const upvotes = snippet.votes.filter(vote => vote.vote > 0).length
+    const downvotes = snippet.votes.filter(vote => vote.vote < 0).length
     const newSnippet: SnippetType = {
         id: snippet.id,
         title: snippet.title,
@@ -27,10 +26,15 @@ export async function fetchSnippets() {
         complexity: ComplexitySupportDB2App[snippet.complexity],
         dependecies: snippet.dependencies,
         keywords: snippet.keywords,
-        by_user: snippet.user
+        by_user: snippet.user,
+        votes: snippet.votes,
+        upvotes: upvotes,
+        downvotes: downvotes,
+        netvotes: upvotes - downvotes
     }
     return newSnippet
   })
+  .sort((a, b) => b.netvotes - a.netvotes);
 
   return snippets;
 }

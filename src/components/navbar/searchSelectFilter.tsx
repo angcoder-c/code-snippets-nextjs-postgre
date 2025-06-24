@@ -24,7 +24,7 @@ export default function SearchSelectFilter ({
     } [ftype]
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
             <label>{capitalize(ftype)}</label>
             <select className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow shadow-black" value={inputAttr.value} onChange={handleChange}>
                 {

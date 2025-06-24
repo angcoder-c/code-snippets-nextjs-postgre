@@ -106,6 +106,13 @@ export type KeywordType = {
     snippetId: string;
 }
 
+export type VoteType = {
+  id?: string
+  vote: number
+  snippetId: string
+  userId: string
+}
+
 export type SnippetType = {
   id?: string
   title: string
@@ -118,4 +125,8 @@ export type SnippetType = {
   dependecies: DependencyType[]
   keywords: KeywordType[]
   by_user: UserType
+  votes: VoteType[]
+  upvotes: number
+  downvotes: number
+  netvotes: number
 }

@@ -65,3 +65,44 @@ export async function createUser(user : UserType) {
   })
   console.log("User register: ", user.email)
 }
+
+// ================= Vote ==================
+export async function createUpVote(snippetId: string, email:string) {
+  const user = await prisma.user.findUnique({
+    where : {
+      email : email
+    }
+  })
+
+  if (user?.id) return
+
+  await prisma.vote.create({
+    data : {
+      vote : 1,
+      snippetId: snippetId,
+      userId: user?.id as string
+    }
+  })
+
+  console.log("UpVote register for snippet", snippetId)
+}
+
+export async function createDownVote(snippetId: string, email:string) {
+  const user = await prisma.user.findUnique({
+    where : {
+      email : email
+    }
+  })
+
+  if (user?.id) return
+
+  await prisma.vote.create({
+    data : {
+      vote : -1,
+      snippetId: snippetId,
+      userId: user?.id as string
+    }
+  })
+
+  console.log("DownVote register for snippet", snippetId)
+}

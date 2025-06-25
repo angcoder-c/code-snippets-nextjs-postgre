@@ -74,7 +74,7 @@ export async function createUpVote(snippetId: string, email:string) {
     }
   })
 
-  if (user?.id) return
+  if (!user?.id) return
 
   await prisma.vote.create({
     data : {
@@ -94,7 +94,7 @@ export async function createDownVote(snippetId: string, email:string) {
     }
   })
 
-  if (user?.id) return
+  if (!user?.id) return
 
   await prisma.vote.create({
     data : {

@@ -5,7 +5,13 @@ import prisma from "@/app/lib/prisma";
 
 // ============================== Snippets ===========================
 // get snippet form db
-export async function fetchSnippets() {
+export async function fetchSnippets(email: string | undefined | null = '') {
+  const user = await prisma.user.findUnique({
+    where : {
+      email : email || ''
+    }
+  })
+
   const snippets = ( await prisma.snippet.findMany({
     include: {
       user: true,
@@ -32,7 +38,8 @@ export async function fetchSnippets() {
         votes: snippet.votes,
         upvotes: upvotes,
         downvotes: downvotes,
-        netvotes: upvotes - downvotes
+        netvotes: upvotes - downvotes,
+        alreadyVotes: snippet.votes.filter(vote => vote.userId===user?.id)
     }
     return newSnippet
   })
@@ -67,42 +74,107 @@ export async function createUser(user : UserType) {
 }
 
 // ================= Vote ==================
-export async function createUpVote(snippetId: string, email:string) {
+export async function createUpVote(snippetId: string, email: string) {
   const user = await prisma.user.findUnique({
-    where : {
-      email : email
+    where: { 
+      email : email 
     }
-  })
+  });
 
-  if (!user?.id) return
+  if (!user?.id) return;
 
-  await prisma.vote.create({
-    data : {
-      vote : 1,
-      snippetId: snippetId,
-      userId: user?.id as string
+  const existingVote = await prisma.vote.findUnique({
+    where: {
+      userId_snippetId: {
+        userId: user.id,
+        snippetId: snippetId
+      }
     }
-  })
+  });
 
-  console.log("UpVote register for snippet", snippetId)
+  if (existingVote) {
+    if (existingVote.vote === 1) return;
+
+    // down to up
+    await prisma.vote.update({
+      where: {
+        userId_snippetId: {
+          userId: user.id,
+          snippetId: snippetId
+        }
+      },
+      data: {
+        vote: 1
+      }
+    });
+
+    console.log("Vote changed to UP for snippet", snippetId);
+  } else {
+    await prisma.vote.create({
+      data: {
+        vote: 1,
+        snippetId,
+        userId: user.id
+      }
+    });
+
+    console.log("UpVote registered for snippet", snippetId);
+  }
 }
 
-export async function createDownVote(snippetId: string, email:string) {
+export async function createDownVote(snippetId: string, email: string) {
   const user = await prisma.user.findUnique({
-    where : {
-      email : email
+    where: { 
+      email : email 
     }
-  })
+  });
 
-  if (!user?.id) return
+  if (!user?.id) return;
 
-  await prisma.vote.create({
-    data : {
-      vote : -1,
-      snippetId: snippetId,
-      userId: user?.id as string
+  const existingVote = await prisma.vote.findUnique({
+    where: {
+      userId_snippetId: {
+        userId: user.id,
+        snippetId: snippetId
+      }
     }
-  })
+  });
 
-  console.log("DownVote register for snippet", snippetId)
+  if (existingVote) {
+    if (existingVote.vote === -1) return;
+
+    // op to down
+    await prisma.vote.update({
+      where: {
+        userId_snippetId: {
+          userId: user.id,
+          snippetId: snippetId
+        }
+      },
+      data: {
+        vote: -1
+      }
+    });
+
+    console.log("Vote changed to DOWN for snippet", snippetId);
+  } else {
+    await prisma.vote.create({
+      data: {
+        vote: -1,
+        snippetId,
+        userId: user.id
+      }
+    });
+
+    console.log("DownVote registered for snippet", snippetId);
+  }
+}
+
+export async function deleteVote(id: string) {
+  await prisma.vote.delete({
+    where: { 
+      id : id 
+    }
+  });
+  console.log("Vote deleted");
 }

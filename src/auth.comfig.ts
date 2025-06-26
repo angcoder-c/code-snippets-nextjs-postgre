@@ -30,11 +30,12 @@ export const authOptions : AuthOptions = {
                 
                 if (!existingUser) {
                     if (user.name && user.email) {
-                        await createUser({
+                        const newUser = {
                             name: user.name,
                             email: user.email,
                             image: user.image || null
-                        })
+                        }
+                        await createUser(newUser)
                     }
                 }
                 return true
@@ -42,6 +43,6 @@ export const authOptions : AuthOptions = {
                 console.error("Login error: ", error.message)
                 return false
             }
-        }
+        },
     },
 }

@@ -1,23 +1,17 @@
 import Navbar from "@/components/navbar/navbar";
-import { fetchSnippets } from "./lib/actions";
-import SnippetCard from "@/components/snippet-card/card";
+import SnippetWrapper from "@/components/wrappers/snippetWrapper";
+import { fetchSnippets } from "@/app/lib/actions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth.comfig";
 
 export default async function Home() {
-  const snippets = await fetchSnippets()
+  const session = await getServerSession(authOptions)
+  const snippets = await fetchSnippets(session?.user?.email)
   return (
     <>
       <Navbar />
-      <div className="pt-10 pb-5">
-        <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
-          {snippets.map((snippet) => {
-            return (
-              <SnippetCard 
-              key={snippet.id} 
-              snippet={snippet}/>
-            )
-          })}
-        </div>
-      </div>
+      <SnippetWrapper
+      snippets={snippets}/>
     </>
   );
 }

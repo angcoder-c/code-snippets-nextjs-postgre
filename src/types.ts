@@ -129,4 +129,14 @@ export type SnippetType = {
   upvotes: number
   downvotes: number
   netvotes: number
+  alreadyVotes?: VoteType[]
+}
+
+// user type for store
+export type UserStoreType = {
+  id?: string
+  name? : string
+  email? : string
+  image? : string | null
+  update: (user: UserType) => void
 }

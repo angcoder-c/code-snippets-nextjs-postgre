@@ -26,7 +26,7 @@ export default function SearchSelectFilter ({
     return (
         <div className="flex flex-col gap-3">
             <label>{capitalize(ftype)}</label>
-            <select className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow shadow-black" value={inputAttr.value} onChange={handleChange}>
+            <select className="bg-gray-800 p-2 rounded-xl shadow shadow-black" value={inputAttr.value} onChange={handleChange}>
                 {
                     inputAttr.opts.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>

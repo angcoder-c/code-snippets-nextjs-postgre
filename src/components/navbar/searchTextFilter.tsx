@@ -19,7 +19,7 @@ export default function SearchTextFilter ({
             type="date" 
             placeholder={capitalize(ftype)} 
             onChange={handleChange}
-            className="bg-white dark:bg-gray-800 rounded-xl p-2 shadow shadow-black"
+            className="bg-gray-800 rounded-xl p-2 shadow shadow-black"
             />
         )
     }    
@@ -30,7 +30,7 @@ export default function SearchTextFilter ({
         type="text" 
         placeholder={capitalize(ftype)} 
         onChange={handleChange}
-        className="bg-white dark:bg-gray-800 rounded-xl p-2 shadow shadow-black"
+        className="bg-gray-800 rounded-xl p-2 shadow shadow-black"
         />
     )
 }

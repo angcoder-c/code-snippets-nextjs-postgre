@@ -20,8 +20,8 @@ export default function VoteButtonsWrapper ({
     alreadyVotes: VoteType[] | undefined
 }) {
     const router = useRouter()
-    const {data: session} = useSession()
-    const isLoggedin = session?.user ? true : false
+    const {data: session, status} = useSession()
+    const isLoggedin = status==='authenticated' ? true : false
     const alreadyVote = alreadyVotes?.find(vote => vote.snippetId===snippetId)
     const [vote, setVote] = useState(alreadyVote?.vote)
     
@@ -78,14 +78,14 @@ export default function VoteButtonsWrapper ({
         if(vote===rootVote*-1) setVote(rootVote)
         if(vote===rootVote) setVote(undefined)
         if(vote===undefined) setVote(rootVote)
-
+        
         startTransition(async ()=> {
             if(vote===rootVote*-1) setYVotes(yvotes-1)
             if(vote===rootVote && alreadyVote?.id) {
                 await deleteExistsVote(setXVotes, xvotes, alreadyVote.id)
                 return
             }
-            if(vote===undefined) await createNewVote(setXVotes, xvotes, rootVote)
+            await createNewVote(setXVotes, xvotes, rootVote)
         })
     }
     return (

@@ -14,7 +14,7 @@ export default function SnippetCard ({
 }) {    
     return (
         <div className="break-inside-avoid mb-4">
-            <div className="bg-gray-800 rounded-2xl p-4 shadow hover:shadow-lg transition-shadow duration-300 border border-gray-700 shadow-black">
+            <div className="bg-gray-800 rounded-xl p-4 shadow hover:shadow-lg transition-shadow duration-300 border border-gray-700 shadow-black">
                 <SnippetCardHeader
                 username={snippet.by_user.name}
                 image={snippet.by_user.image}

@@ -10,7 +10,7 @@ export default function Navbar () {
     return (
         <header className="bg-white dark:bg-gray-800 p-4 sm:px-20 rounded-2xl shadow shadow-black border border-gray-200 dark:border-gray-700">
             <nav className="flex flex-row gap-5 justify-between p-2 size-full">
-                <div>
+                <div className="max-h-fit">
                     <Link href={'/'} prefetch={true}>
                         Home
                     </Link>
@@ -18,9 +18,7 @@ export default function Navbar () {
                 <div className="hidden md:block w-full">
                     <SearchBar/>
                 </div>
-                <div>
-                    <AuthButton/>
-                </div>
+                <AuthButton/>
             </nav>
             <div className="block md:hidden w-full">
                 <SearchBar/>

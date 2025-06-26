@@ -91,7 +91,6 @@ export async function createVote(snippetId: string, email: string, vote: 1 | -1)
       }
     }
   });
-
   if (existingVote) {
     if (existingVote.vote === vote) return;
 
@@ -104,7 +103,7 @@ export async function createVote(snippetId: string, email: string, vote: 1 | -1)
         }
       },
       data: {
-        vote: vote*-1
+        vote: vote
       }
     });
   } else {

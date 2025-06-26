@@ -26,7 +26,7 @@ export default function VoteButton ({
             if (isLoggedin) { 
                 onClick()
             } else {
-                toast.custom((t) => (
+                toast.custom(() => (
                 <div className="bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black] text-center text-white min-w-25 py-5 px-10 border-2 border-gray-700 rounded-xl">
                     Please sign in to like this snippet
                 </div>

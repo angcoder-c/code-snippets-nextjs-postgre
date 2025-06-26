@@ -74,7 +74,7 @@ export async function createUser(user : UserType) {
 }
 
 // ================= Vote ==================
-export async function createUpVote(snippetId: string, email: string) {
+export async function createVote(snippetId: string, email: string, vote: 1 | -1){
   const user = await prisma.user.findUnique({
     where: { 
       email : email 
@@ -93,9 +93,9 @@ export async function createUpVote(snippetId: string, email: string) {
   });
 
   if (existingVote) {
-    if (existingVote.vote === 1) return;
+    if (existingVote.vote === vote) return;
 
-    // down to up
+    // down to up OR up to down
     await prisma.vote.update({
       where: {
         userId_snippetId: {
@@ -104,69 +104,19 @@ export async function createUpVote(snippetId: string, email: string) {
         }
       },
       data: {
-        vote: 1
+        vote: vote*-1
       }
     });
-
-    console.log("Vote changed to UP for snippet", snippetId);
   } else {
     await prisma.vote.create({
       data: {
-        vote: 1,
+        vote: vote,
         snippetId,
         userId: user.id
       }
     });
 
-    console.log("UpVote registered for snippet", snippetId);
-  }
-}
-
-export async function createDownVote(snippetId: string, email: string) {
-  const user = await prisma.user.findUnique({
-    where: { 
-      email : email 
-    }
-  });
-
-  if (!user?.id) return;
-
-  const existingVote = await prisma.vote.findUnique({
-    where: {
-      userId_snippetId: {
-        userId: user.id,
-        snippetId: snippetId
-      }
-    }
-  });
-
-  if (existingVote) {
-    if (existingVote.vote === -1) return;
-
-    // op to down
-    await prisma.vote.update({
-      where: {
-        userId_snippetId: {
-          userId: user.id,
-          snippetId: snippetId
-        }
-      },
-      data: {
-        vote: -1
-      }
-    });
-
-    console.log("Vote changed to DOWN for snippet", snippetId);
-  } else {
-    await prisma.vote.create({
-      data: {
-        vote: -1,
-        snippetId,
-        userId: user.id
-      }
-    });
-
-    console.log("DownVote registered for snippet", snippetId);
+    console.log("Vote registered for snippet", snippetId);
   }
 }
 

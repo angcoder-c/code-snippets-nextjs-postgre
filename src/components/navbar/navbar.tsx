@@ -11,7 +11,7 @@ export default function Navbar () {
         <header className="bg-gray-800 p-4 sm:px-20 rounded-2xl shadow shadow-black border border-gray-700">
             <nav className="flex flex-row gap-5 justify-between p-2 size-full">
                 <div className="max-h-fit">
-                    <Link href={'/'} prefetch={true}>
+                    <Link href={'/'} prefetch={false} replace={true}>
                         Home
                     </Link>
                 </div>

@@ -14,7 +14,7 @@ const initialState: SearchBarUpdate = {
 export const useSearchStore = create<SearchBarType>((set) => ({
     ...initialState,
     update: (update: Partial<SearchBarUpdate>) => set(
-        (state) => ({ ...state, ...update })
+        (state) =>({ ...state, ...update })
     ),
     toggleFilters : () => set(
         state => ({

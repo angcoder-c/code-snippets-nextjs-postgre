@@ -41,7 +41,7 @@ export default function SearchBar() {
     handleChangeDate(searchParams.get('date')?.toString() || '')
     handleChangeLanguage(searchParams.get('language')?.toString() || 'No select')
     handleChangeComplexity(searchParams.get('complexity')?.toString() || 'No select')
-  }, [])
+  }, [pathname, searchParams])
 
   const updateQueryParams = useDebouncedCallback(() => {
     const params = new URLSearchParams(searchParams.toString())
@@ -75,7 +75,7 @@ export default function SearchBar() {
     } else {
         params.delete('language')
     }
-
+    
     if (complexity && complexity!=='No select') {
         params.set('complexity', complexity)
     } else {

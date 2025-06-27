@@ -14,11 +14,9 @@ export default function SearchSelectFilter ({
 
     const inputAttr = {
         language : {
-            value : LanguagesSupportArray.includes(value) ? value : 'No select',
             opts : LanguagesSupportArray,
         },
         complexity : {
-            value : ComplexitySupportArray.includes(value) ? value : 'No select',
             opts : ComplexitySupportArray,
         }
     } [ftype]
@@ -26,7 +24,12 @@ export default function SearchSelectFilter ({
     return (
         <div className="flex flex-col gap-3">
             <label>{capitalize(ftype)}</label>
-            <select className="bg-gray-800 p-2 rounded-xl shadow shadow-black" value={inputAttr.value} onChange={handleChange}>
+            <select 
+            key={`${ftype}-${value}`}
+            className="bg-gray-800 p-2 rounded-xl shadow shadow-black" 
+            defaultValue={value} 
+            onChange={handleChange}
+            >
                 {
                     inputAttr.opts.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>

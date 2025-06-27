@@ -48,6 +48,54 @@ export async function fetchSnippets(email: string | undefined | null = '') {
   return snippets;
 }
 
+export async function fetchSnippet(snippetId:string, email: string | undefined | null = '') {
+  const user = await prisma.user.findUnique({
+    where : {
+      email : email || ''
+    }
+  })
+
+  const snippets = []
+  const snippet = await prisma.snippet.findUnique({
+    where:{
+      id: snippetId
+    },
+    include: {
+      user: true,
+      dependencies: true,
+      keywords: true,
+      votes: true
+    }
+  })
+
+  snippets.push(snippet)
+
+  snippets
+  .map(snippet => {
+    if (!snippet) return null
+
+    const upvotes = snippet.votes.filter(vote => vote.vote > 0).length
+    const downvotes = snippet.votes.filter(vote => vote.vote < 0).length
+    const newSnippet: SnippetType = {
+        ...snippet,
+        created_at: snippet.createdAt,
+        language: snippet.language as LanguagesSupport,
+        language_version: snippet.languageVersion,
+        complexity: ComplexitySupportDB2App[snippet.complexity],
+        dependecies: snippet.dependencies,
+        by_user: snippet.user,
+        votes: snippet.votes,
+        upvotes: upvotes,
+        downvotes: downvotes,
+        netvotes: upvotes - downvotes,
+        alreadyVotes: snippet.votes.filter(vote => vote.userId===user?.id)
+    }
+    return newSnippet
+  })
+
+  return snippets[0];
+}
+
 
 //======================== Users =======================
 // check use exists

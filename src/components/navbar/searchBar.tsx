@@ -7,6 +7,7 @@ import SearchSelectFilter from "@/components/navbar/searchSelectFilter"
 import useSearchState from "@/hooks/useSearchState"
 import useSearchActions from "@/hooks/useSearchActions"
 import { useDebouncedCallback } from "use-debounce"
+import { useEffect } from "react"
 
 export default function SearchBar() {
   const pathname = usePathname()
@@ -33,13 +34,16 @@ export default function SearchBar() {
     handleChangeKeyword,
   } = useSearchActions()
 
+  useEffect(()=>{
+    handleChangeBody(searchParams.get('body')?.toString() || '')
+    handleChangeDependency(searchParams.get('dependencies')?.toString() || '')
+    handleChangeKeyword(searchParams.get('keywords')?.toString() || '')
+    handleChangeDate(searchParams.get('date')?.toString() || '')
+    handleChangeLanguage(searchParams.get('language')?.toString() || 'No select')
+    handleChangeComplexity(searchParams.get('complexity')?.toString() || 'No select')
+  }, [])
+
   const updateQueryParams = useDebouncedCallback(() => {
-    console.log(body)
-    console.log(dependency)
-    console.log(keyword)
-    console.log(date)
-    console.log(language)
-    console.log(complexity)
     const params = new URLSearchParams(searchParams.toString())
 
     if (body) {
@@ -111,7 +115,7 @@ export default function SearchBar() {
       )}>
         <SearchTextFilter
           ftype='date'
-          value={searchParams.get('date')?.toString() || ''}
+          value={date?.toISOString().split('T')[0] || ''}
           handleChange={(e)=>handleChangeDate(e.target.value)}
         />
         <SearchTextFilter

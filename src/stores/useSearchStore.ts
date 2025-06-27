@@ -5,7 +5,7 @@ const initialState: SearchBarUpdate = {
     body : "",
     language : "No select",
     dependency : "",
-    date : new Date(),
+    date : undefined,
     complexity : "No select",
     filters: false,
     keyword : ""

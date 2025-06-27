@@ -67,7 +67,7 @@ export type SearchBarUpdate = {
   language: LanguagesSupport
   dependency: string
   keyword: string
-  date: Date
+  date: Date | undefined
   complexity: ComplexitySupport
   filters : boolean
 }
@@ -76,7 +76,7 @@ export type SearchBarType = {
   body: string
   language: LanguagesSupport
   dependency: string
-  date: Date
+  date: Date | undefined
   complexity: ComplexitySupport
   filters: boolean
   keyword: string

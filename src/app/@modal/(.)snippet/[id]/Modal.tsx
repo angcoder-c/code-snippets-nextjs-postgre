@@ -2,16 +2,46 @@
 
 import { useRouter } from 'next/navigation'
 import useClickOutside from '@/hooks/useClickOutside'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 
 export default function Modal ({ id }: { id: string }) {
   const router = useRouter()
-  const ref = useClickOutside(()=>router.back())
+  const [isOpen, setIsOpen] = useState(true)
+  
+  const handleClose = () => {
+    setIsOpen(false)
+    setTimeout(() => {
+      router.back()
+    }, 200)
+  }
+  const ref = useClickOutside(handleClose)
   return (
-    <div className="page-transition fixed inset-0 backdrop-blur-sm flex items-center justify-center">
-      <div className="text-white bg-gray-800 p-4 rounded aspect-square" ref={ref}>
-        <h1>Snippet {id}</h1>
-        <button onClick={() => router.back()}>Close</button>
-      </div>
-    </div>
+    <AnimatePresence>
+      {
+        isOpen && (
+          <motion.div 
+          key="backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center"
+          >
+            <motion.div 
+            key="modal"
+            initial={{ scale: 0.95, opacity: 0, y: 30 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 30 }}
+            transition={{ duration: 0.2 }}
+            className="text-white bg-gray-800 p-4 rounded aspect-square border-4 border-gray-700 shadow-lg shadow-black" 
+            ref={ref}
+            >
+              <p>Snippet {id}</p>
+              <button onClick={handleClose}>Close</button>
+            </motion.div>
+          </motion.div>
+        )
+      }
+    </AnimatePresence>
   )
 }

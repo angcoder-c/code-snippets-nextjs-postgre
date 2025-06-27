@@ -5,7 +5,6 @@ import SnippetTextBox from "@/components/snippet-card/textBox";
 import SnippetCardHeader from "@/components/snippet-card/header";
 import SnippetTagWrapper from "@/components/snippet-card/tagWrapper";
 import { SnippetType } from "@/types";
-import { useRouter } from "next/navigation";
 import VoteButtonsWrapper from "./voteButtonsWrapper";
 import Link from "next/link";
 
@@ -14,7 +13,6 @@ export default function SnippetCard ({
 }: {
     snippet : SnippetType
 }) {
-    const router = useRouter()
     return (
         <div className="break-inside-avoid mb-4">
             <div className="bg-gray-800 rounded-xl p-4 shadow hover:shadow-lg transition-shadow duration-300 border border-gray-700 shadow-black">
@@ -28,6 +26,7 @@ export default function SnippetCard ({
                 <Link href={`/snippet/${snippet.id}`} className="text-lg font-semibold text-white mb-3 line-clamp-2 hover:underline">
                     {snippet.title}
                 </Link>
+                
 
                 <div className="flex flex-wrap gap-2 mb-3">
                     <LanguageBadge

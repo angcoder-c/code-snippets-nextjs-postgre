@@ -5,8 +5,10 @@ import { Toaster } from "@/components/ui/sonner"
 
 export default async function RootLayout({
   children,
+  modal
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode
 }>) {
   const session = await getSession();
   return (
@@ -16,6 +18,7 @@ export default async function RootLayout({
             {/* border-3 border-white */}
             <main className="min-h-dvh pt-5 max-w-200 justify-center items-center m-auto sm:w-full px-3 md:px-2">
               {children}
+              {modal}
               <Toaster position="bottom-center"/>
             </main>
           </Providers>

@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function SnippetCardHeader ({
     username,
     image,
@@ -10,14 +12,14 @@ export default function SnippetCardHeader ({
     return (
         <div className="flex justify-between items-start mb-3 text-sm text-gray-400">
             <span className="hidden">{image}</span>
-            <a
+            <Link
             href={`https://github.com/${username}`}
             className="hover:text-blue-400 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
             >
                 @{username}
-            </a>
+            </Link>
             <span className="text-xs">
                 {date?.toISOString().split("T")[0].replace(/-/g, "/")}
             </span>

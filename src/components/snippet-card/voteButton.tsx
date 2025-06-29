@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { toast } from "sonner"
+import customToast from "../ui/customToast"
 
 export default function VoteButton ({
     type,
@@ -26,16 +26,12 @@ export default function VoteButton ({
             if (isLoggedin) { 
                 onClick()
             } else {
-                toast.custom(() => (
-                <div className="bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black] text-center text-white min-w-25 py-5 px-10 border-2 border-gray-700 rounded-xl">
-                    Please sign in to like this snippet
-                </div>
-                ));
+                customToast("Please sign in to like this snippet")
             }
         }} 
         className={clsx(
-            "flex gap-2 px-4 py-2 rounded-lg border font-bold border-gray-700 items-center bg-gray-800 hover:shadow hover:bg-gray-900 transition-all duration-200",
-            vote===root ? 'bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black] hover:bg-white hover:text-gray-800 hover:shadow-none' : ''
+            "flex gap-2 px-4 py-2 rounded-lg border font-bold border-gray-700 items-center bg-gray-800 hover:shadow active:shadow hover:bg-gray-900 active:bg-gray-900 transition-all duration-200",
+            vote===root ? 'bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black] hover:bg-white active:bg-white hover:text-gray-800 active:text-gray-800 hover:shadow-none active:shadow-none' : ''
         )}
         disabled={disabled}
         >

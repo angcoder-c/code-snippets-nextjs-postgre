@@ -70,10 +70,9 @@ export async function fetchSnippet(snippetId:string, email: string | undefined |
 
   snippets.push(snippet)
 
-  snippets
+  return snippets
   .map(snippet => {
     if (!snippet) return null
-
     const upvotes = snippet.votes.filter(vote => vote.vote > 0).length
     const downvotes = snippet.votes.filter(vote => vote.vote < 0).length
     const newSnippet: SnippetType = {
@@ -91,9 +90,7 @@ export async function fetchSnippet(snippetId:string, email: string | undefined |
         alreadyVotes: snippet.votes.filter(vote => vote.userId===user?.id)
     }
     return newSnippet
-  })
-
-  return snippets[0];
+  })[0]
 }
 
 

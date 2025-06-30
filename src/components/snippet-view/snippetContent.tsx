@@ -1,13 +1,14 @@
-// components/snippet-view/snippetContent.tsx
 'use client'
 
-import VoteButtonsWrapper from "../snippet-card/voteButtonsWrapper"
-import SnippetCardHeader from "../snippet-card/header"
-import { LanguageBadge, ComplexityBadge } from "../snippet-card/badges"
-import SnippetTagWrapper from "../snippet-card/tagWrapper"
-import SnippetTextBoxExpand from "./snippetTextBoxExpand"
+import VoteButtonsWrapper from "@/components/snippet-card/voteButtonsWrapper"
+import SnippetCardHeader from "@/components/snippet-card/header"
+import { LanguageBadge, ComplexityBadge } from "@/components/snippet-card/badges"
+import SnippetTagWrapper from "@/components/snippet-card/tagWrapper"
+import SnippetTextBoxExpand from "@/components/snippet-view/snippetTextBoxExpand"
 import { SnippetType, LanguagesSupport, ComplexitySupport } from "@/types"
 import LinkButton from "./linkButton"
+import useSnippetState from "@/hooks/useSnippetSatate"
+import { useEffect } from "react"
 
 export default function SnippetContent({
     snippet,
@@ -16,7 +17,32 @@ export default function SnippetContent({
     snippet: SnippetType | null,
     mode: 'inside' | 'outside'
 }) {
-    // Validación temprana
+    const { setSnippetVotes } = useSnippetState()
+    
+    useEffect(() => {
+        if (!snippet?.id) return
+        
+        const userVote = snippet.alreadyVotes?.[0] 
+        if (userVote) {
+            setSnippetVotes(
+                snippet.id, 
+                snippet.upvotes, 
+                snippet.downvotes, 
+                {
+                    id: userVote?.id || '', 
+                    vote: userVote.vote, 
+                    snippetId: userVote.snippetId
+                }
+            )
+        }
+    }, [
+        snippet?.id, 
+        snippet?.upvotes, 
+        snippet?.downvotes, 
+        snippet?.alreadyVotes, 
+        setSnippetVotes
+    ])
+
     if (!snippet) {
         return (
             <div className="flex items-center justify-center h-full text-gray-400">
@@ -52,10 +78,7 @@ export default function SnippetContent({
                 )}
 
                 <VoteButtonsWrapper
-                    snippetId={snippet.id}
-                    upvotes={snippet.upvotes || 0}
-                    downvotes={snippet.downvotes || 0}
-                    alreadyVotes={snippet.alreadyVotes || []}
+                snippetId={snippet.id || ''}
                 />
             </div>
 

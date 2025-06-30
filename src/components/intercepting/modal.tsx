@@ -43,7 +43,7 @@ export default function Modal ({ children }: { children: React.ReactNode }) {
               onClick={handleClose}
               className={
                 clsx(
-                  "py-2 px-4 mt-3 w-fit rounded-lg text-right font-bold",
+                  "py-2 px-4 mt-3 w-fit rounded-lg text-right font-bold transition-all duration-300",
                   "text-white border-1 border-gray-700 bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black]",
                   "hover:bg-white hover:text-gray-900 hover:shadow-none",
                 )

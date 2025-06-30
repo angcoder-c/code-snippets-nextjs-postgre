@@ -6,13 +6,37 @@ import SnippetCardHeader from "@/components/snippet-card/header";
 import SnippetTagWrapper from "@/components/snippet-card/tagWrapper";
 import { SnippetType } from "@/types";
 import VoteButtonsWrapper from "./voteButtonsWrapper";
+import { useEffect } from "react";
 import Link from "next/link";
+import useSnippetState from "@/hooks/useSnippetSatate";
 
 export default function SnippetCard ({
     snippet 
 }: {
     snippet : SnippetType
 }) {
+    const { 
+        id, 
+        upvotes, 
+        downvotes, 
+        alreadyVotes 
+    } = snippet
+    const { setSnippetVotes } = useSnippetState()
+
+    useEffect(() => {
+        if (!id) return
+        const userVote = alreadyVotes?.[0] 
+        if (userVote) {
+            setSnippetVotes(id, upvotes, downvotes, {id: userVote?.id || '', vote: userVote.vote, snippetId: userVote.snippetId})
+        }
+    }, [
+        id, 
+        upvotes, 
+        downvotes, 
+        alreadyVotes, 
+        setSnippetVotes
+    ])
+
     return (
         <div className="break-inside-avoid mb-4">
             <div className="bg-gray-800 rounded-xl p-4 shadow hover:shadow-lg transition-shadow duration-300 border border-gray-700 shadow-black">
@@ -65,10 +89,7 @@ export default function SnippetCard ({
                     />
                 </div>
                 <VoteButtonsWrapper
-                snippetId={snippet.id}
-                upvotes={snippet.upvotes}
-                downvotes={snippet.downvotes}
-                alreadyVotes={snippet.alreadyVotes}
+                snippetId={snippet.id || ''}
                 />
             </div>
         </div>

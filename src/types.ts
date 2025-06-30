@@ -113,6 +113,17 @@ export type VoteType = {
   userId: string
 }
 
+export type SnippetVotes = {
+  id: string
+  upvotes: number
+  downvotes: number
+  userVote?: {
+      id: string,
+      vote: number,
+      snippetId: string
+  }
+}
+
 export type SnippetType = {
   id?: string
   title: string

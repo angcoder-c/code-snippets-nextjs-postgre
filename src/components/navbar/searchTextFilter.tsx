@@ -15,7 +15,7 @@ export default function SearchTextFilter ({
         <input 
         defaultValue={value}
         type={ftype==='date'? 'date': 'text'} 
-        placeholder={capitalize(ftype)} 
+        placeholder={ftype==='date' ? 'dd-mm-aaaa': capitalize(ftype)} 
         onChange={handleChange}
         className="bg-gray-800 rounded-xl p-2 shadow shadow-black w-full"
         />

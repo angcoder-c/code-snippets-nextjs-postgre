@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import useClickOutside from '@/hooks/useClickOutside'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+import clsx from 'clsx'
 
 export default function Modal ({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -26,7 +27,7 @@ export default function Modal ({ children }: { children: React.ReactNode }) {
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center min-h-[100dvh] min-w-[100dvw]"
           >
             <motion.div 
             key="modal"
@@ -34,11 +35,22 @@ export default function Modal ({ children }: { children: React.ReactNode }) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 30 }}
             transition={{ duration: 0.2 }}
-            className="text-white bg-gray-800 p-4 rounded max-w-[80dvw] max-h-[90dvh] lg:max-w-200 border-4 border-gray-700 shadow-lg shadow-black overflow-y-scroll" 
+            className="text-white bg-gray-800 rounded p-4 max-w-[80dvw] max-h-[90dvh] w-full h-fit border-4 border-gray-700 shadow-lg shadow-black box-content flex flex-col" 
             ref={ref}
             >
               { children }
-              <button onClick={handleClose}>Close</button>
+              <button 
+              onClick={handleClose}
+              className={
+                clsx(
+                  "py-2 px-4 mt-3 w-fit rounded-lg text-right font-bold",
+                  "text-white border-1 border-gray-700 bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black]",
+                  "hover:bg-white hover:text-gray-900 hover:shadow-none",
+                )
+              }
+              >
+                Close
+              </button>
             </motion.div>
           </motion.div>
         )

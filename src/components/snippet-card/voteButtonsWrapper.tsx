@@ -24,7 +24,7 @@ export default function VoteButtonsWrapper ({
     const isLoggedin = status==='authenticated' ? true : false
     const alreadyVote = alreadyVotes?.find(vote => vote.snippetId===snippetId)
     const [vote, setVote] = useState(alreadyVote?.vote)
-    
+
     // optimistic up-votes
     const [isUpvotePending, startUpvoteTransition] = useTransition()
     const [optimisticUpvote, setOptimisticUpvotes] = useOptimistic(
@@ -89,7 +89,7 @@ export default function VoteButtonsWrapper ({
         })
     }
     return (
-        <div className="flex gap-4 pt-5 text-white">
+        <div className="flex gap-4 text-white">
             <VoteButton
             type="up"
             isLoggedin={isLoggedin}

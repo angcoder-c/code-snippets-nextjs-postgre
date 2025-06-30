@@ -2,7 +2,11 @@
 
 import { Editor } from '@monaco-editor/react'
 
-export default function SnippetEditor ({code}:{code:string}){
+export default function SnippetEditor ({
+    code
+}:{
+    code:string
+}){
     return (
         <Editor 
         theme='vs-dark' 

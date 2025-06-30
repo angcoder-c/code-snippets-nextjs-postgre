@@ -90,6 +90,8 @@ export default function SnippetCard ({
                 </div>
                 <VoteButtonsWrapper
                 snippetId={snippet.id || ''}
+                actualDownvotes={snippet.downvotes}
+                actualUpvotes={snippet.upvotes}
                 />
             </div>
         </div>

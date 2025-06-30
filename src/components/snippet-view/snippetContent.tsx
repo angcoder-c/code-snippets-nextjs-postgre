@@ -79,6 +79,8 @@ export default function SnippetContent({
 
                 <VoteButtonsWrapper
                 snippetId={snippet.id || ''}
+                actualDownvotes={snippet.downvotes}
+                actualUpvotes={snippet.upvotes}
                 />
             </div>
 

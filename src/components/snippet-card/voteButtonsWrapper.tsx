@@ -7,7 +7,7 @@ import { createVote, deleteVote } from "@/app/lib/actions";
 import VoteButton from "./voteButton";
 import useSnippetState from "@/hooks/useSnippetSatate";
 
-export default function VoteButtonWrapper({ snippetId }: { snippetId: string }) {
+export default function VoteButtonWrapper({ snippetId, actualUpvotes, actualDownvotes }: { snippetId: string, actualUpvotes: number, actualDownvotes: number }) {
     const router = useRouter()
     const { data: session, status } = useSession()
     const isLoggedIn = status === 'authenticated'
@@ -16,18 +16,14 @@ export default function VoteButtonWrapper({ snippetId }: { snippetId: string }) 
     const { snippets, updateVotes } = useSnippetState()
     const snippet = snippets[snippetId]
 
-    if (!snippet) return null
-
     const { 
         upvotes, 
         downvotes, 
         userVote 
-    } = snippet
+    } = snippet || {upvotes: actualUpvotes, downvotes: actualDownvotes}
     const vote = userVote?.vote
 
     const handleVote = (rootVote: 1 | -1) => {
-        if (!isLoggedIn) return
-
         let deltaUp = 0
         let deltaDown = 0
         let newVote: typeof userVote | undefined = undefined

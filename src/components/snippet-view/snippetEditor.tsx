@@ -3,17 +3,26 @@
 import { Editor } from '@monaco-editor/react'
 
 export default function SnippetEditor ({
-    code
+    code,
+    language,
+    editable
 }:{
-    code:string
+    code:string | undefined,
+    language: string | undefined,
+    editable?: boolean
+} = {
+    code: undefined,
+    language: 'python',
+    editable: false
 }){
+    console.log(language)
     return (
         <Editor 
         theme='vs-dark' 
-        defaultLanguage="python"
+        language={language? language.split(' ')[0].toLowerCase(): undefined}
         defaultValue={code} 
         options={{
-            readOnly: true, 
+            readOnly: editable? false: true, 
             minimap: { 
                 enabled: false
             },

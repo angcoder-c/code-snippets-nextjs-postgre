@@ -16,14 +16,17 @@ export default async function SnippetModal ({
     return (
         <Modal>
             <div className="min-w-[80dvw] h-[70dvh] flex flex-col-reverse md:flex-row rounded-lg overflow-hidden">
-            <div className="md:w-[40%] w-full h-[40%] md:h-full overflow-y-auto p-4 space-y-4">
-                <SnippetContent snippet={snippet} mode="inside"/>
-            </div>
-            <div className="md:w-[60%] w-full h-[60%] md:h-full overflow-hidden">
-                <div className="h-full overflow-y-auto">
-                <SnippetEditor code={snippet?.code || ''} />
+                <div className="md:w-[40%] w-full h-[40%] md:h-full overflow-y-auto p-4 space-y-4">
+                    <SnippetContent snippet={snippet} mode="inside"/>
                 </div>
-            </div>
+                <div className="md:w-[60%] w-full h-[60%] md:h-full overflow-hidden">
+                    <div className="h-full overflow-y-auto">
+                    <SnippetEditor 
+                    code={snippet?.code || ''} 
+                    language={snippet?.language}
+                    />
+                    </div>
+                </div>
             </div>
         </Modal>
     )

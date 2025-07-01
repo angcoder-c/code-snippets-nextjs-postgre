@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import useClickOutside from "@/hooks/useClickOutside"
 import clsx from "clsx"
@@ -8,6 +9,7 @@ import Image from "next/image"
 
 export default function AuthButton () {
     const {data:session, status} = useSession()
+    const router = useRouter()
     const [showMenu, setShowMenu] = useState(false)
     const ref = useClickOutside(()=>setShowMenu(false))
 
@@ -39,21 +41,41 @@ export default function AuthButton () {
                 className="rounded-full"
                 />
             </button>
-            <button 
-            onClick={() => signOut()}
-            className={
+            <div className={
                 clsx(
-                    "absolute z-10 top-15 right-4 md:top-12 min-w-25",
+                    "absolute z-10 top-15 right-4 md:top-12 min-w-25 flex flex-col gap-3 items-end",
                     "origin-top-right transition-all duration-300",
-                    "py-2 px-4 rounded-lg text-right font-bold",
-                    "text-white border-1 border-gray-700 bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black]",
-                    "hover:bg-white hover:text-gray-900 hover:shadow-none",
                     showMenu ? 'scale-100' : 'scale-0'
                 )
-            }
-            >
-                Sign Out
-            </button>
+            }>    
+                <button 
+                onClick={() => router.push('/create/')}
+                className={
+                    clsx(
+                        "py-2 px-4 rounded-lg text-right font-bold w-fit",
+                        "origin-top-right transition-all duration-300",
+                        "text-white border-1 border-gray-700 bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black]",
+                        "hover:bg-white hover:text-gray-900 hover:shadow-none"
+                    )
+                }
+                >
+                    Create
+                </button>
+
+                <button 
+                onClick={() => signOut()}
+                className={
+                    clsx(
+                        "py-2 px-4 rounded-lg text-right font-bold w-fit",
+                        "origin-top-right transition-all duration-300",
+                        "text-white border-1 border-gray-700 bg-gray-900 shadow-[inset_0px_-10px_20px_-10px_black]",
+                        "hover:bg-white hover:text-gray-900 hover:shadow-none"
+                    )
+                }
+                >
+                    Sign Out
+                </button>
+            </div>
         </div>
     )
 }

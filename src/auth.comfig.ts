@@ -44,5 +44,11 @@ export const authOptions : AuthOptions = {
                 return false
             }
         },
+        async jwt({ token, account }) {
+            if (account) {
+                token.accessToken = account.access_token
+            }
+            return token
+        },
     },
 }

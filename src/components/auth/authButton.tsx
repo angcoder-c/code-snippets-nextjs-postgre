@@ -43,7 +43,7 @@ export default function AuthButton () {
             </button>
             <div className={
                 clsx(
-                    "absolute z-10 top-15 right-4 md:top-12 min-w-25 flex flex-col gap-3 items-end",
+                    "absolute z-10 top-15 right-4 md:top-12 min-w-30 flex flex-col gap-3 items-end",
                     "origin-top-right transition-all duration-300",
                     showMenu ? 'scale-100' : 'scale-0'
                 )

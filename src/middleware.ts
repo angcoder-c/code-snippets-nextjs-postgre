@@ -4,7 +4,7 @@ import { getToken } from 'next-auth/jwt'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const publicPaths = ['/']
+  // const publicPaths = ['/']
   
   // routes protected
   const protectedPaths = ['/create']

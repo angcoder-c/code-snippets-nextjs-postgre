@@ -46,7 +46,7 @@ type DefineSnippetStateType = {
     updateCode: (code: string) => void
 }
 
-export const useDefineSnippetStore = create<DefineSnippetStateType>((set, get) => (
+export const useDefineSnippetStore = create<DefineSnippetStateType>((set) => (
     {
         ...initState,
         addDependency: (name:string, version:string | undefined)=>set(
@@ -54,24 +54,24 @@ export const useDefineSnippetStore = create<DefineSnippetStateType>((set, get) =
         ),
         updateKeywords: (keywords_str: string) => set(
             (state)=>({ 
-                keywords_str: keywords_str,
+                keywords_str: state.keywords_str+keywords_str,
                 keywords: keywords_str.split(" ")
             })
         ),
         addTitle: (title: string) => set(
-            (state) => ({ title })
+            (state) => ({ title: state.title + title })
         ),
         updateDescription: (description: string) => set(
-            (state) => ({ description })
+            (state) => ({ description: state.description + description })
         ),
         updateLanguageVersion: (version: string) => set(
-            (state)=>({ language_version: version })
+            (state)=>({ language_version: state.language_version+version })
         ),
         updateLanguage: (lang: LanguagesSupport) => set(
-            (state) => ({ language: lang })
+            () => ({ language: lang })
         ),
         updateCode: (code: string) => set(
-            (state) => ({ code })
+            (state) => ({ code: state.code+code })
         )
     }
 ))
